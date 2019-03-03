@@ -1,4 +1,4 @@
-# Find all forcible paths between the src and the dst
+# Requirements Checking for Dynamic Bidirectional Reconfiguration
 This is a program for requirements checking, guaranteed reachability checking, and paths finding of a dynamic bidirectional reconfiguration problem in the DES framework.
 
 
