@@ -95,9 +95,13 @@ int main() {
 	string path_t = *test_tgt.begin();
 	cout << "The path_t is : " << path_t << endl;
 	
-	paths = findAllPaths(path_s, path_t, gr, s_t);
+	paths = findAllPaths(path_s, path_t, gr, s_t);     // Paths finding! Output lots of things
+	cout << endl;
 	
-	
+	// Efficient GR Checking! 
+	set<string> eff_gr;
+	eff_gr = efficientGR(ts, tt, tr, states_ori, forcible_ev); // most useful func for GR
+	paths = findAllPaths(path_s, path_t, eff_gr, s_t);     // Paths finding! Output lots of things
 	ou.close();
 	
 	getchar();

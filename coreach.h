@@ -37,6 +37,11 @@ void kStepCoreach(set<string>& ts, set<string>& tt, vector<tran>& tr,
 // Please use this func and the func below!
 set<string> guaranteedReach(set<string>& ts, set<string>& tt, vector<tran>& tr, 
                      vector<string>& states, vector<vector<string>>& fe);
+
+// Guaranteed Rechability with fewest steps needed.
+// Under development. Design for efficiency.
+set<string> efficientGR(set<string>& ts, set<string>& tt, vector<tran>& tr, 
+                        vector<string>& states, vector<vector<string>>& fe);
                      
 // K-step Guaranteed Rechability on SCDES
 // Is not the real k-step
@@ -44,5 +49,6 @@ set<string> guaranteedReach(set<string>& ts, set<string>& tt, vector<tran>& tr,
 void kStepGuaReach(set<string>& ts, set<string>& tt, vector<tran>& tr, 
                      vector<string>& states, vector<vector<string>>& fe, 
                      int steps);
+
 
 #endif // COREACH_H

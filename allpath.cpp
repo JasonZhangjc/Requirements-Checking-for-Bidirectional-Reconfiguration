@@ -4,6 +4,8 @@ vector<string> findAllPaths(const string& src, const string& dst,
 	set<string>& sta_rch, map<string, set<string>>& s_t) {
 	
 	Path p = {};  // p is to store a forcible paths found
+	string shortest_path;
+	int length = sta_rch.size();
 	
 	// Before that, an 'if statement' is needed
 	if (sta_rch.find(src) == sta_rch.end()) {
@@ -33,7 +35,10 @@ vector<string> findAllPaths(const string& src, const string& dst,
 			p_s.push_back(temp_i);
 		//cout << " 4 " << endl;
 			for (auto k : j.second) {
-				p_s[i].push_back(k);
+				set<string>::iterator it_k = sta_rch.find(k);
+				if (it_k != sta_rch.end()) {
+					p_s[i].push_back(k);
+				}
 			}
 			i++;
 		}
@@ -61,13 +66,13 @@ vector<string> findAllPaths(const string& src, const string& dst,
 	map<string, vector<string>> is_visited;
 	for (auto i : p_s) {
 		string key = i[0];
-		cout << "The key is : " << key << endl;
+		// cout << "The key is : " << key << endl;
 		is_visited.insert(pair<string, vector<string>>(key, i));
 		vector<string>::iterator k = is_visited[key].begin();
     	is_visited[key].erase(k);
 		for (auto &j : is_visited[key]) { // use 'yinyong' here!!1
-			cout << "6" << endl;
-			cout << j << endl;
+			// cout << "6" << endl;
+			// cout << j << endl;
 			j = "0";
 		}
 	}
@@ -85,7 +90,7 @@ vector<string> findAllPaths(const string& src, const string& dst,
 	Path stack = {};
 	stack.push_back(src);
 	in_stack.at(src) = "1";
-	cout << " 5 " << endl;
+	cout << " Main loop starts! " << endl;
 	
 	  // Main loop
 	while (!stack.empty()) {		
@@ -117,10 +122,16 @@ vector<string> findAllPaths(const string& src, const string& dst,
         
 		if (stack.back() == dst) {	
 			string forcible_path = "";
-				
+			int length_temp = 0;
+			
 			Path_it it = stack.begin();
 			for (; it != stack.end(); it++) {
 				forcible_path = forcible_path + "->" + *it;
+				length_temp++;
+			}
+			if (length_temp <= length) {
+				length = length_temp;
+				shortest_path = forcible_path;
 			}
 		
 			cout << "Found a forcible path: " << forcible_path << endl;
@@ -150,6 +161,10 @@ vector<string> findAllPaths(const string& src, const string& dst,
     }
 	
 	cout << "There are " << p.size() << " paths in total!" << endl;
+	
+	cout << "The shortest path has size " << length-1 << " !" << endl;
+	cout << shortest_path << endl;
+	
 	return p;
 	
 }
