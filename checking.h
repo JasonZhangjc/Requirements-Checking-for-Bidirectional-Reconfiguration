@@ -22,10 +22,12 @@ using namespace std;
 // Check the first requirement
 void checkFirst(ads& a, vector<string>& v_mie);
 
-void firstCheck(map<string, set<string>>& e_s); // check src, evt, tgt
+// void firstCheck(map<string, set<string>>& e_s); // check src, evt, tgt
 
 // Check the second requirement
 void checkSecond(ads& a, vector<string>& v_re, vector<set<string>>& states,
                  map<string, int>& m_src, map<string, int>& m_tgt);
+
+void checkFifth(vector<set<string>>& states, vector<string>& states_ori);
 
 #endif // CHECKING_H

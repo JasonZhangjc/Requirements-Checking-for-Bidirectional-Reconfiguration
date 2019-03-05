@@ -127,3 +127,60 @@ void checkSecond(ads& a, vector<string>& v_re, vector<set<string>>& states,
 	}
 	
 }
+
+void checkFifth(vector<set<string>>& states, vector<string>& states_ori) {
+	cout << "Checking the fifth requirement: " << endl;
+	cout << "If no further message showing that the fifth requirement is not met, " 
+		 << "it is met! " << endl;
+	set<string> temp;
+	set<string> total;
+	set<string> total_ori;
+	// check intersection
+	for (int i = 0; i < states.size(); i++) {
+		for (int j = i+1; j < states.size(); j++) {
+			set_intersection(states[i].begin(), states[i].end(), 
+			                 states[j].begin(), states[j].end(),
+			                 inserter(temp, temp.begin()));
+			if (temp.empty()) {
+			}
+			else {
+				cout << "The fifth requirement is not met! " << endl;
+				cout << "The mode predicate " << i << " and the mode predicate "
+				     << j << " have shared states: ";
+				for (auto p : temp) {
+					cout << p << " ";
+				}
+				cout << endl;
+				break;
+			}
+		}
+	}
+	// check union
+	for (int i = 0; i < states.size(); i++) {
+		for (auto j : states[i]) {
+			total.insert(j);
+		}
+	}
+	
+	set<string>::iterator it = total.find("0");
+	if (it != total.end()) {
+		cout << "The fifth requirement is not met! " << endl;
+		cout << "The initial state 0 is in the predicate! " << endl;
+	}
+	
+	total.insert("0");
+	
+	for (auto k : states_ori) {
+		total_ori.insert(k);
+	}
+	
+	if (total != total_ori) {
+		cout << "The fifth requirement is not met! " << endl;
+		cout << "The union of all mode predicates with 0 "
+		     << "doesn't cover all states in the reconfiguration plant! "
+		     << endl;
+	}
+	
+}
+
+// set_union(A.begin(),A.end(),B.begin(),B.end(),inserter( C1 , C1.begin() ) );

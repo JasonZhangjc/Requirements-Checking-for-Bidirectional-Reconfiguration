@@ -27,6 +27,8 @@ int main() {
 	readin(ad_0);
 	ad_0.setStates();
 	ad_0.printAds();
+	vector<string> total = ad_0.getStates();
+	
 	
 	
 	alphabet alp;
@@ -60,6 +62,7 @@ int main() {
 	checkFirst(ad_0, mie);                     // Check the first requirement!
 	checkSecond(ad_0, re, m_states, msrc, mtgt); // Check the second and the third requirement!
 	looseCoreach(ad_0, m_states, m_events);        // Check the fourth requirement!
+	checkFifth(m_states, total);
 	
 	// Check the strict coreachability or the so-called guaranteed reachability
 	set<string> ts = alp.getTest_src();
