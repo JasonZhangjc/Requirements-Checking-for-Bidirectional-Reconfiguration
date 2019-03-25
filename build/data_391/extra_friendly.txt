@@ -17,7 +17,7 @@ RE meanings:
 93,2,1
 
 The source state set and the target state set:
-14
+15
 13
 
 The forcible events and corresponding states:

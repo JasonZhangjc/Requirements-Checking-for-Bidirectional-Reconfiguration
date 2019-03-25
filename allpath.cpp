@@ -160,6 +160,13 @@ vector<string> findAllPaths(const string& src, const string& dst,
     	Path_it ito = stack.begin();			
     }
 	
+	cout << "There are " << sta_rch.size() << " states in the Q_RG." << endl;
+	cout << "The states in the Q_RG are: " << endl;
+	for (auto q_rg : sta_rch) {
+		cout << q_rg << " ";
+	}
+	cout << endl;
+	
 	cout << "There are " << p.size() << " paths in total!" << endl;
 	
 	cout << "The shortest path has size " << length-1 << " !" << endl;

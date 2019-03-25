@@ -29,6 +29,8 @@ public:
 	map<string, set<string>> getSrc_tgt();
 	map<string, set<string>> getTgt_src();
 	
+	map<string, set<vector<string>>> getS_e_t();
+	
 	void setName(string _name);
 	void setSize(int _size);
 	void setStates();
@@ -43,6 +45,9 @@ public:
 	void printEvt_tgt();
 	void printSrc_tgt();
 	void printTgt_src();
+	
+	void printS_e_t();
+	
 private:
 	string name;
 	int size;
@@ -55,6 +60,8 @@ private:
 	map<string, set<string>> evt_tgt;
 	map<string, set<string>> src_tgt;
 	map<string, set<string>> tgt_src;
+	
+	map<string, set<vector<string>>> s_e_t;
 };
 
 #endif // ADS_H

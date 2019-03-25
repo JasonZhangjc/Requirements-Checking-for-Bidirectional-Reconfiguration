@@ -82,6 +82,7 @@ void readin(ads& a) {
     	if (temp == "# CTCT ADS auto-generated") {
     		getline(myfile,temp);
     		getline(myfile,temp);
+    		cout << "Read in name of the .ADS " << temp << endl;
     		a.setName(temp);
     	}
     	

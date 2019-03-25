@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/check.dir/main.cpp.o CMakeFiles/check.dir/transition.cpp.o CMakeFiles/check.dir/ads.cpp.o CMakeFiles/check.dir/func.cpp.o CMakeFiles/check.dir/checking.cpp.o CMakeFiles/check.dir/alphabet.cpp.o CMakeFiles/check.dir/predicate.cpp.o CMakeFiles/check.dir/coreach.cpp.o CMakeFiles/check.dir/allpath.cpp.o  -o check -rdynamic 

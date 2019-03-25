@@ -12,7 +12,7 @@ void predicate::setMode_states(ads& a, vector<vector<string>>& events,
 		// find and push_back is fast for 'vector'
 		string ev_init = m_init[i+1];
 		set<string> s;
-		
+		cout << "The ev_init now is: " << ev_init << endl;
 		// modify alphabet again!
 		for (auto k : a.getTrans()) {
 			string ev_mie_temp = k.getEvt();

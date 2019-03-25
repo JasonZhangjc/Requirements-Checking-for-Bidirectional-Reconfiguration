@@ -14,6 +14,7 @@ map<string, set<string>> ads::getEvt_src(){return evt_src;}
 map<string, set<string>> ads::getEvt_tgt(){return evt_tgt;}
 map<string, set<string>> ads::getSrc_tgt(){return src_tgt;}
 map<string, set<string>> ads::getTgt_src(){return tgt_src;}
+map<string, set<vector<string>>> ads::getS_e_t(){return s_e_t;}
 
 void ads::setName(string _name){name = _name;}
 void ads::setSize(int _size){size = _size;}
@@ -37,6 +38,23 @@ void ads::setMap() {
 		map<string, set<string>>::iterator et = evt_tgt.find(evt);
 		map<string, set<string>>::iterator st = src_tgt.find(src);
 		map<string, set<string>>::iterator ts = tgt_src.find(tgt);
+		map<string, set<vector<string>>>::iterator iset = s_e_t.find(src);
+		
+		// source_event&target map
+		if (iset != s_e_t.end()) {
+			vector<string> temp_et1;
+			temp_et1.push_back(evt);
+			temp_et1.push_back(tgt);
+			s_e_t[src].insert(temp_et1);
+		}
+		else {
+			vector<string> temp_et2;
+			temp_et2.push_back(evt);
+			temp_et2.push_back(tgt);
+			set<vector<string>> temp_set;
+			temp_set.insert(temp_et2);
+			s_e_t.insert(pair<string, set<vector<string>>>(src, temp_set));
+		}
 		
 		// source_event map
 		if (se != src_evt.end()) {
@@ -174,6 +192,16 @@ void ads::printTgt_src() {
 		cout << i.first << " : ";
 		for (auto j : i.second) {
 			cout << j << " ";
+		}
+		cout << endl;
+	}
+}
+void ads::printS_e_t() {
+	cout << "The source - event&target map is: " << endl;
+	for (auto i : s_e_t) {
+		cout << i.first << " : " << endl;
+		for (auto j : i.second) {
+			cout << j.at(0) << " to " << j.at(1) << endl;
 		}
 		cout << endl;
 	}

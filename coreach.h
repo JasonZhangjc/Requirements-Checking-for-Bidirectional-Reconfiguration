@@ -50,5 +50,11 @@ void kStepGuaReach(set<string>& ts, set<string>& tt, vector<tran>& tr,
                      vector<string>& states, vector<vector<string>>& fe, 
                      int steps);
 
+// Guaranteed Rechability with fewest steps needed.
+// Under development. Design for efficiency.
+set<string> mapGR(set<string>& ts, set<string>& tt, 
+                    map<string, set<vector<string>>>& set_map, 
+                    vector<string>& states, vector<vector<string>>& fe);
+
 
 #endif // COREACH_H

@@ -1,6 +1,6 @@
 #include "alphabet.h"
 
-/* This is the class for the ADS */
+/* This is the class for the alphabet */
 
 alphabet::alphabet(){}
 

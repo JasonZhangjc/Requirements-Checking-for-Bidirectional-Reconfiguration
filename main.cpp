@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <chrono>
 
 #include "transition.h"
 #include "ads.h"
@@ -16,6 +17,7 @@
 
 
 using namespace std;
+using namespace std::chrono;
 
 int main() {
 
@@ -72,21 +74,23 @@ int main() {
 	vector<vector<string>> forcible_ev = alp.getForce();
 	int num_of_step = alp.getNum_step();
 	
-	strictCoreach(ts, tt, tr, states_ori, forcible_ev);
-	set<string> gr;
-	gr = guaranteedReach(ts, tt, tr, states_ori, forcible_ev); // most useful func for GR
-	kStepGuaReach(ts, tt, tr, states_ori, forcible_ev, num_of_step);
+	// strictCoreach(ts, tt, tr, states_ori, forcible_ev);
+	// set<string> gr;
+	// gr = guaranteedReach(ts, tt, tr, states_ori, forcible_ev); // most useful func for GR
+	// kStepGuaReach(ts, tt, tr, states_ori, forcible_ev, num_of_step);
 	
 	// The only task left is to generate all paths
 	// six maps!
 	ad_0.setMap();
+	
+	/*
 	ad_0.printSrc_evt();
 	ad_0.printTgt_evt();
 	ad_0.printEvt_src();
 	ad_0.printEvt_tgt();
 	ad_0.printSrc_tgt();
 	ad_0.printTgt_src();
-	
+	*/
 
 	// Use 'src_tgt' or 'tgt_src' with the result of GR, which is 'gr'
 	map<string, set<string>> s_t = ad_0.getSrc_tgt();
@@ -98,17 +102,45 @@ int main() {
 	string path_t = *test_tgt.begin();
 	cout << "The path_t is : " << path_t << endl;
 	
-	paths = findAllPaths(path_s, path_t, gr, s_t);     // Paths finding! Output lots of things
+	// paths = findAllPaths(path_s, path_t, gr, s_t);     // Paths finding! Output lots of things
 	cout << endl;
 	
 	// Efficient GR Checking! 
+	/*
 	set<string> eff_gr;
+	
+	auto t1 = high_resolution_clock::now();
 	eff_gr = efficientGR(ts, tt, tr, states_ori, forcible_ev); // most useful func for GR
+	auto t2 = high_resolution_clock::now();
+	
+	
 	paths = findAllPaths(path_s, path_t, eff_gr, s_t);     // Paths finding! Output lots of things
+	
+	cout << endl << "Efficient-GR-Checking took: " 
+         << duration_cast<milliseconds>(t2 - t1).count() << " ms!" << endl 
+         << endl;
+	*/
+	
+	// using map!!!!! much more efficient
+	ad_0.printS_e_t();
+	map<string, set<vector<string>>> set_map = ad_0.getS_e_t();
+	
+	set<string> tdes_gr;
+	
+	auto t3 = high_resolution_clock::now();
+	tdes_gr = mapGR(ts, tt, set_map, states_ori, forcible_ev);
+	auto t4 = high_resolution_clock::now();
+	cout << endl << "Map-GR-Checking took: " 
+         << duration_cast<milliseconds>(t4 - t3).count() << " ms!" << endl 
+         << endl;
+	paths = findAllPaths(path_s, path_t, tdes_gr, s_t);     // Paths finding! Output lots of things
+		
 	ou.close();
 	
-	getchar();
-	getchar();
+	
+	// getchar();
+	// getchar();
+	cout << "Everything is okay so far! " << endl;
 
 return 0;
 }

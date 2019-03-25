@@ -1,0 +1,3 @@
+/home/js/git_requirements_ckecking_BR/build/CMakeFiles/edit_cache.dir
+/home/js/git_requirements_ckecking_BR/build/CMakeFiles/rebuild_cache.dir
+/home/js/git_requirements_ckecking_BR/build/CMakeFiles/check.dir
