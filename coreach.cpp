@@ -460,6 +460,147 @@ set<string> guaranteedReach(set<string>& ts, set<string>& tt, vector<tran>& tr,
 
 
 
+
+
+
+// Using map to implement the original GR function
+set<string> mapOriGR(set<string>& ts, set<string>& tt,
+					 map<string, set<vector<string>>>& set_map, 
+                     vector<string>& states, vector<vector<string>>& fe) {
+                     
+	set<string> state_list = tt;
+	set<string> state_rem;
+	for (auto q : states) {
+		state_rem.insert(q);
+	}
+	
+	for (auto i : state_list) {  // delete tt from state_rem
+		set<string>::iterator its = state_rem.find(i);
+		if (its != state_rem.end()) {
+			state_rem.erase(i);
+		}
+	}
+	
+	cout << endl;
+	cout << "The state_rem has states: " << endl;
+	for (auto rm : state_rem) {
+		cout << rm << " ";
+	}
+	cout << endl << endl;
+	
+	string set_ele = "";
+	for (auto set_i : ts) {
+		set_ele = set_i;
+		// break;
+	}
+	cout << "The source state is : " << set_ele << endl; // ok
+	
+	// Need to consider all controllable events!
+	// Need a classification !!!!!
+	// Need a while loop!!!!!!!!
+	set<string> temp_rem;
+	while (temp_rem != state_rem) {
+	temp_rem = state_rem;
+	int flag_found = 0;
+		// Core loop!!!!!!!!!!!!!!!!!
+		for (auto a1 : state_rem) {  // for all remaining states
+			int flag_2 = 0;  // is for controllable transitions
+			int flag_3 = 0;
+			int flag_force = 0;
+			
+			for (auto a2 : set_map[a1]) {     // for all transitions
+				// Checking uncontrollable transitions
+				int flag_4 = stoi(a2[0]) % 2;
+				set<string>::iterator it2 = state_rem.find(a2[1]);
+				if (flag_4 == 0 && it2 != state_rem.end()) {
+					flag_2 = 1;  // there exists uncontrollable transitions
+				}
+				// Checking reachability
+				set<string>::iterator it3 = state_list.find(a2[1]);
+				if (it3 != state_list.end()) {
+					flag_3 = 1;
+				}
+				// Checking forcible events
+				for (auto fc : fe) {
+					if (fc[0] == a2[0]) {
+						for (int iter=1; iter<fc.size(); iter++) {
+							if (fc[iter] == a1) {
+								if (it3 != state_list.end()) {
+									flag_force = 1;
+									break;
+								}
+							}
+						}
+					}
+					if (flag_3 == 1 && flag_force == 1) {
+						break;
+					}
+				}
+				
+				if (flag_force == 1 && flag_3 == 1) {
+					break;
+				}
+			}
+			// Evaluation:
+			// (No escape uncontr tran || forcible reach) && reachable
+			if ((flag_2 == 0 || flag_force == 1) && flag_3 == 1) { 
+				state_list.insert(a1);
+				state_rem.erase(a1);
+				cout << "State " << a1 << " is added! " << endl;
+				if (set_ele == a1) {
+					flag_found = 1;
+					break;
+				}
+			}
+			else {
+			}
+		}
+		
+		if (flag_found == 1) {
+			break;
+		}
+	}
+
+
+	cout << endl;
+	cout << "The state_list has states: " << endl;
+	for (auto ls2 : state_list) {
+		cout << ls2 << " ";
+	}
+	cout << endl << endl;
+	
+	int flag_f = 0;
+	for (auto p : ts) {
+		set<string>::iterator itf = state_list.find(p);
+		if (itf != state_list.end()) {
+			cout << "The state " << p << " is strictly coreachable w.r.t "
+			     << "the destination states chosen by the user! " << endl;
+		}
+		else {
+			cout << "The state " << p << " is NOT strictly coreachable w.r.t "
+			     << "the destination states chosen by the user! " << endl;
+			flag_f = 1;
+		}
+	}
+	
+	if (flag_f == 1) {
+		cout << "There are some source states that are NOT strictly coreachable!" 
+		     << endl;
+	}
+	else {
+		cout << "All source states are strictly coreachable! " << endl;
+	}
+	
+	return state_list;
+}
+
+
+
+
+
+
+
+
 // For fewest steps! Efficient finding!!!!!!
 set<string> efficientGR(set<string>& ts, set<string>& tt, vector<tran>& tr, 
                         vector<string>& states, vector<vector<string>>& fe) {
@@ -682,61 +823,22 @@ set<string> mapGR(set<string>& ts, set<string>& tt,
 			int flag_force = 0;
 			int flag_4 = 0;
 			// cout << "enter a1 loop! " << endl;
-			
-			/*
-			// Modify this loop!!!!!!!
-			for (auto a2 : tr) {     // for all transitions
-				if (a2.getSrc() == a1) {
-					// Checking uncontrollable transitions
-					flag_4 = stoi(a2.getEvt()) % 2;
-					set<string>::iterator it2 = state_rem.find(a2.getTgt());
-					if (flag_4 == 0 && it2 != state_rem.end()) {
-						flag_2 = 1;  // there exists uncontrollable transitions
-					}
-					// Checking reachability
-					set<string>::iterator it3 = state_list.find(a2.getTgt());
-					if (it3 != state_list.end()) {
-						flag_3 = 1;
-					}
-					// Checking forcible events
-					for (auto fc : fe) {
-						if (fc.at(0) == a2.getEvt()) {
-							for (int iter=1; iter<fc.size(); iter++) {
-								if (fc[iter] == a1) {
-									if (it3 != state_list.end()) {
-										flag_force = 1;
-										break;
-									}
-								}
-							}
-						}
-						if (flag_3 == 1 && flag_force == 1) {
-							break;
-						}
-					}
-				}
-				if (flag_force == 1 && flag_3 == 1) {
-					break;
-				}
-			} // a2 loop ends
-			*/
-			
-			
+						
 			for (auto a2 : set_map[a1]) { // for all trans with a1 the src
 				// Checking uncontrollable transitions
-				flag_4 = stoi(a2.at(0)) % 2;
-				set<string>::iterator it2 = state_rem.find(a2.at(1));
+				flag_4 = stoi(a2[0]) % 2;
+				set<string>::iterator it2 = state_rem.find(a2[1]);
 				if (flag_4 == 0 && it2 != state_rem.end()) {
 					flag_2 = 1;  // there exists uncontrollable transitions
 				}
 				// Checking reachability
-				set<string>::iterator it3 = state_list.find(a2.at(1));
+				set<string>::iterator it3 = state_list.find(a2[1]);
 				if (it3 != state_list.end()) {
 					flag_3 = 1;
 				}
 				// Checking forcible events
 				for (auto fc : fe) {
-					if (fc.at(0) == a2.at(0)) {
+					if (fc[0] == a2[0]) {
 						for (int iter=1; iter<fc.size(); iter++) {
 							if (fc[iter] == a1) {
 								if (it3 != state_list.end()) {
@@ -838,6 +940,493 @@ set<string> mapGR(set<string>& ts, set<string>& tt,
 	return state_list;                   
 
 }
+
+
+
+
+
+// timed_DES GR!
+set<string> timedGR(set<string>& ts, set<string>& tt, set<string> wf,
+                    map<string, set<vector<string>>>& set_map, 
+                    vector<string>& states, vector<vector<string>>& fe) {
+                    
+	set<string> state_list = tt;
+	set<string> state_rem;
+	for (auto q : states) {
+		state_rem.insert(q);
+	}
+	
+	for (auto i : state_list) {  // delete tt from state_rem
+		set<string>::iterator its = state_rem.find(i);
+		if (its != state_rem.end()) {
+			state_rem.erase(i);
+		}
+	}
+	
+	cout << endl;
+	cout << "The state_rem has states: " << endl;
+	for (auto rm : state_rem) {
+		cout << rm << " ";
+	}
+	cout << endl << endl;
+
+	
+	// Need to consider all controllable events!
+	// Need a classification !!!!!
+	// Need a while loop!!!!!!!!
+	// int flag_found = 0;
+	set<string> temp_rem;
+	string set_ele = "";
+	for (auto set_i : ts) {
+		set_ele = set_i;
+		// break;
+	}
+	cout << "The source state is : " << set_ele << endl; // ok
+	
+	// main loop needs to be changed!
+	// six conditions
+	while (temp_rem != state_rem) {
+	temp_rem = state_rem;
+	set<string> add_list;
+	
+		// Core loop!
+		for (auto a1 : state_rem) {  // for all remaining states
+			int flag_1p = 0;
+			int flag_12 = 0;
+			int flag_34 = 0;
+			int flag_345 = 0;
+			int flag_16 = 0;	
+			
+			for (auto a2 : set_map[a1]) {	
+				// int flag_1 = 0;
+				// int flag_2 = 0;
+				// int flag_3 = 0;
+				// int flag_4 = 0;
+				// int flag_5 = 0;
+				// int flag_6 = 0;
+				int flag_even = 0;
+				
+				// Checking reachability
+				set<string>::iterator it3 = state_list.find(a2[1]);
+				if (it3 != state_list.end()) {
+					// flag_1 = 1;
+					flag_1p = 1;
+					
+					// Checking weakly forcibility
+					set<string>::iterator iwf1 = wf.find(a2[0]);;
+					if (iwf1 != wf.end()) {
+						flag_16 = 1;
+					}
+					
+					// Checking locally forcibility
+					for (auto fc : fe) {
+						if (fc[0] == a2[0]) {
+							for (int iter=1; iter<fc.size(); iter++) {
+								if (fc[iter] == a1) {
+									if (it3 != state_list.end()) {
+										// flag_2 = 1;
+										flag_12 = 1;
+										break;
+									}
+								}
+							}
+						}
+						if (flag_12 == 1) {
+							break;
+						}
+					}
+					if (flag_12 == 1) {					
+						break;
+					}
+				}
+				
+				// Checking uncontrollable transitions
+				flag_even = stoi(a2[0]) % 2;
+				set<string>::iterator it2 = state_rem.find(a2[1]);
+				if (flag_even == 0 && it2 != state_rem.end()) {
+					flag_34 = 1;  // there exists uncontrollable transitions
+					
+					// Checking weakly forcibility
+					set<string>::iterator iwf2 = wf.find(a2[0]);;
+					if (iwf2 != wf.end()) {
+						flag_345 = 1;
+					}
+				}
+			
+			}
+			
+			// Evaluation:
+			// (No escape uncontr tran || forcible reach) && reachable
+			if (flag_12 == 1) {
+				if (a1 == set_ele) {  // Only consider one source state.
+					state_list.insert(a1);
+					/*
+					cout << "The state_list contains : " << endl;
+					for (auto sta_l : state_list) {
+						cout << sta_l << " ";
+					}
+					cout << endl;
+					*/
+					for (auto p : ts) {
+						set<string>::iterator itf = state_list.find(p);
+						if (itf != state_list.end()) {
+							cout << "The state " << p << " is strictly coreachable w.r.t "
+			     				<< "the destination states chosen by the user! " << endl;
+						}
+					}
+					
+					return state_list;
+					// flag_found = 1;
+					// break;
+				}
+				
+				add_list.insert(a1);
+				state_rem.erase(a1);
+				cout << "State " << a1 << " is added! " << endl;
+				// deal with set
+				/*
+				cout << "The add_list contains : " << endl;
+				for (auto ad : add_list) {
+					cout << ad << " ";
+				}
+				cout << endl;
+				*/
+				continue;
+			}
+			
+			else if (flag_345 == 1) {
+				continue;
+			}
+			
+			else if (flag_16 == 1) {
+				if (a1 == set_ele) {  // Only consider one source state.
+					state_list.insert(a1);
+					/*
+					cout << "The state_list contains : " << endl;
+					for (auto sta_l : state_list) {
+						cout << sta_l << " ";
+					}
+					cout << endl;
+					*/
+					for (auto p : ts) {
+						set<string>::iterator itf = state_list.find(p);
+						if (itf != state_list.end()) {
+							cout << "The state " << p << " is strictly coreachable w.r.t "
+			     				<< "the destination states chosen by the user! " << endl;
+						}
+					}
+					
+					return state_list;
+					// flag_found = 1;
+					// break;
+				}
+				
+				add_list.insert(a1);
+				state_rem.erase(a1);
+				cout << "State " << a1 << " is added! " << endl;
+				// deal with set
+				/*
+				cout << "The add_list contains : " << endl;
+				for (auto ad : add_list) {
+					cout << ad << " ";
+				}
+				cout << endl;
+				*/
+				continue;
+			}
+			
+			else if (flag_34 == 1) {
+				continue;
+			}
+			
+			else if (flag_1p == 1) {
+				if (a1 == set_ele) {  // Only consider one source state.
+					state_list.insert(a1);
+					/*
+					cout << "The state_list contains : " << endl;
+					for (auto sta_l : state_list) {
+						cout << sta_l << " ";
+					}
+					cout << endl;
+					*/
+					for (auto p : ts) {
+						set<string>::iterator itf = state_list.find(p);
+						if (itf != state_list.end()) {
+							cout << "The state " << p << " is strictly coreachable w.r.t "
+			     				<< "the destination states chosen by the user! " << endl;
+						}
+					}
+					
+					return state_list;
+					// flag_found = 1;
+					// break;
+				}
+				
+				add_list.insert(a1);
+				state_rem.erase(a1);
+				cout << "State " << a1 << " is added! " << endl;
+				// deal with set
+				/*
+				cout << "The add_list contains : " << endl;
+				for (auto ad : add_list) {
+					cout << ad << " ";
+				}
+				cout << endl;
+				*/
+				continue;
+			}
+			
+			else {
+				continue;
+			}
+			
+		} // a1 loop ends
+// error.........................................
+// memory is not enough!!!!!!!!!!!
+		
+		for (auto addl : add_list) {
+		// cout << "2" << endl;
+			state_list.insert(addl);
+		}
+		
+		// cout << "3" << endl;
+		add_list.clear();
+	}
+
+    // no output below
+	cout << endl;
+	cout << "The state_list has states: " << endl;
+	for (auto ls2 : state_list) {
+		cout << ls2 << " ";
+	}
+	cout << endl << endl;
+	
+	int flag_f = 0;
+	for (auto p : ts) {
+		set<string>::iterator itf = state_list.find(p);
+		if (itf != state_list.end()) {
+			cout << "The state " << p << " is strictly coreachable w.r.t "
+			     << "the destination states chosen by the user! " << endl;
+		}
+		else {
+			cout << "The state " << p << " is NOT strictly coreachable w.r.t "
+			     << "the destination states chosen by the user! " << endl;
+			flag_f = 1;
+		}
+	}
+	
+	if (flag_f == 1) {
+		cout << "There are some source states that are NOT strictly coreachable!" 
+		     << endl;
+	}
+	else {
+		cout << "All source states are strictly coreachable! " << endl;
+	}
+	
+	return state_list;                   
+
+}
+
+
+
+
+
+
+
+// Using map to implement the original GR function
+set<string> timedOriGR(set<string>& ts, set<string>& tt, set<string> wf,
+					   map<string, set<vector<string>>>& set_map, 
+                       vector<string>& states, vector<vector<string>>& fe) {
+                     
+	set<string> state_list = tt;
+	set<string> state_rem;
+	for (auto q : states) {
+		state_rem.insert(q);
+	}
+	
+	for (auto i : state_list) {  // delete tt from state_rem
+		set<string>::iterator its = state_rem.find(i);
+		if (its != state_rem.end()) {
+			state_rem.erase(i);
+		}
+	}
+	
+	cout << endl;
+	cout << "The state_rem has states: " << endl;
+	for (auto rm : state_rem) {
+		cout << rm << " ";
+	}
+	cout << endl << endl;
+	
+	string set_ele = "";
+	for (auto set_i : ts) {
+		set_ele = set_i;
+		// break;
+	}
+	cout << "The source state is : " << set_ele << endl; // ok
+	
+	// Need to consider all controllable events!
+	// Need a classification !!!!!
+	// Need a while loop!!!!!!!!
+	set<string> temp_rem;
+	while (temp_rem != state_rem) {
+	temp_rem = state_rem;
+	int flag_found = 0;
+		// Core loop!!!!!!!!!!!!!!!!!
+		for (auto a1 : state_rem) {  // for all remaining states
+			int flag_1p = 0;
+			int flag_12 = 0;
+			int flag_34 = 0;
+			int flag_345 = 0;
+			int flag_16 = 0;	
+			
+			for (auto a2 : set_map[a1]) {	
+				// int flag_1 = 0;
+				// int flag_2 = 0;
+				// int flag_3 = 0;
+				// int flag_4 = 0;
+				// int flag_5 = 0;
+				// int flag_6 = 0;
+				int flag_even = 0;
+				
+				// Checking reachability
+				set<string>::iterator it3 = state_list.find(a2[1]);
+				if (it3 != state_list.end()) {
+					// flag_1 = 1;
+					flag_1p = 1;
+					
+					// Checking weakly forcibility
+					set<string>::iterator iwf1 = wf.find(a2[0]);;
+					if (iwf1 != wf.end()) {
+						flag_16 = 1;
+					}
+					
+					// Checking locally forcibility
+					for (auto fc : fe) {
+						if (fc[0] == a2[0]) {
+							for (int iter=1; iter<fc.size(); iter++) {
+								if (fc[iter] == a1) {
+									if (it3 != state_list.end()) {
+										// flag_2 = 1;
+										flag_12 = 1;
+										break;
+									}
+								}
+							}
+						}
+						if (flag_12 == 1) {
+							break;
+						}
+					}
+					if (flag_12 == 1) {					
+						break;
+					}
+				}
+				
+				// Checking uncontrollable transitions
+				flag_even = stoi(a2[0]) % 2;
+				set<string>::iterator it2 = state_rem.find(a2[1]);
+				if (flag_even == 0 && it2 != state_rem.end()) {
+					flag_34 = 1;  // there exists uncontrollable transitions
+					
+					// Checking weakly forcibility
+					set<string>::iterator iwf2 = wf.find(a2[0]);;
+					if (iwf2 != wf.end()) {
+						flag_345 = 1;
+					}
+				}
+			
+			}
+				
+		
+			// Evaluation:
+			// (No escape uncontr tran || forcible reach) && reachable
+			if (flag_12 == 1) {
+				state_list.insert(a1);
+				state_rem.erase(a1);
+				cout << "State " << a1 << " is added! " << endl;
+				if (set_ele == a1) {
+					flag_found = 1;
+					break;
+				}
+				continue;
+			}
+			
+			else if (flag_345 == 1) {
+				continue;
+			}
+			
+			else if (flag_16 == 1) {
+				state_list.insert(a1);
+				state_rem.erase(a1);
+				cout << "State " << a1 << " is added! " << endl;
+				if (set_ele == a1) {
+					flag_found = 1;
+					break;
+				}
+				continue;
+			}
+			
+			else if (flag_34 == 1) {
+				continue;
+			}
+			
+			else if (flag_1p == 1) {
+				state_list.insert(a1);
+				state_rem.erase(a1);
+				cout << "State " << a1 << " is added! " << endl;
+				if (set_ele == a1) {
+					flag_found = 1;
+					break;
+				}
+				continue;
+			}
+			
+			else {
+				continue;
+			}
+			
+		} // a1 loop ends
+		
+		if (flag_found == 1) {
+			break;
+		}
+	}
+
+
+	cout << endl;
+	cout << "The state_list has states: " << endl;
+	for (auto ls2 : state_list) {
+		cout << ls2 << " ";
+	}
+	cout << endl << endl;
+	
+	int flag_f = 0;
+	for (auto p : ts) {
+		set<string>::iterator itf = state_list.find(p);
+		if (itf != state_list.end()) {
+			cout << "The state " << p << " is strictly coreachable w.r.t "
+			     << "the destination states chosen by the user! " << endl;
+		}
+		else {
+			cout << "The state " << p << " is NOT strictly coreachable w.r.t "
+			     << "the destination states chosen by the user! " << endl;
+			flag_f = 1;
+		}
+	}
+	
+	if (flag_f == 1) {
+		cout << "There are some source states that are NOT strictly coreachable!" 
+		     << endl;
+	}
+	else {
+		cout << "All source states are strictly coreachable! " << endl;
+	}
+	
+	return state_list;
+}
+
+
 
 
 

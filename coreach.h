@@ -37,6 +37,11 @@ void kStepCoreach(set<string>& ts, set<string>& tt, vector<tran>& tr,
 // Please use this func and the func below!
 set<string> guaranteedReach(set<string>& ts, set<string>& tt, vector<tran>& tr, 
                      vector<string>& states, vector<vector<string>>& fe);
+                     
+// Using map to implement the original GR function
+set<string> mapOriGR(set<string>& ts, set<string>& tt,
+					 map<string, set<vector<string>>>& set_map, 
+                     vector<string>& states, vector<vector<string>>& fe);
 
 // Guaranteed Rechability with fewest steps needed.
 // Under development. Design for efficiency.
@@ -47,14 +52,26 @@ set<string> efficientGR(set<string>& ts, set<string>& tt, vector<tran>& tr,
 // Is not the real k-step
 // k-step needs to be realized in forcible paths
 void kStepGuaReach(set<string>& ts, set<string>& tt, vector<tran>& tr, 
-                     vector<string>& states, vector<vector<string>>& fe, 
-                     int steps);
+                   vector<string>& states, vector<vector<string>>& fe, 
+                   int steps);
 
-// Guaranteed Rechability with fewest steps needed.
-// Under development. Design for efficiency.
+// Guaranteed Rechability with fewer steps needed.
+// Using 'map' (black-red-tree) for efficiency
 set<string> mapGR(set<string>& ts, set<string>& tt, 
+                  map<string, set<vector<string>>>& set_map, 
+                  vector<string>& states, vector<vector<string>>& fe);
+
+// GR for timed-DES.
+// Using 'map' (black-red-tree) for efficiency
+// Must consider weakly-forcible events and locally-strongly-forcible-event
+set<string> timedGR(set<string>& ts, set<string>& tt, set<string> wf,
                     map<string, set<vector<string>>>& set_map, 
                     vector<string>& states, vector<vector<string>>& fe);
+
+// original timed GR checking
+set<string> timedOriGR(set<string>& ts, set<string>& tt, set<string> wf,
+					   map<string, set<vector<string>>>& set_map, 
+                       vector<string>& states, vector<vector<string>>& fe);
 
 
 #endif // COREACH_H

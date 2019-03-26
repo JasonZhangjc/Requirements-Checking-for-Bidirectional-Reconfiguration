@@ -34,6 +34,7 @@ public:
 	set<string> getTest_tgt();
 	vector<vector<string>> getForce();
 	int getNum_step();
+	set<string> getWeak_force();
 	
 	void readExtra();
 	void readExtraFriendly();
@@ -47,6 +48,7 @@ public:
 	void printTest_tgt();
 	void printForce();
 	void printNum_step();
+	void printWeak_force();
 private:
 	vector<string> MIE;
 	vector<string> RE;
@@ -54,10 +56,11 @@ private:
 	map<string, int> mode_src;
 	map<string, int> mode_tgt;	
 	map<int, string> mode_init;
-	set<string> test_src;
-	set<string> test_tgt;
-	vector<vector<string>> force;
+	set<string> test_src;    // may be modified
+	set<string> test_tgt;    // may be modified
+	vector<vector<string>> force;   // use set is also possible
 	int num_step;
+	set<string> weak_force;
 };
 
 #endif // ALPHABET_H

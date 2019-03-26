@@ -125,16 +125,45 @@ int main() {
 	ad_0.printS_e_t();
 	map<string, set<vector<string>>> set_map = ad_0.getS_e_t();
 	
-	set<string> tdes_gr;
+	set<string> des_gr;
 	
 	auto t3 = high_resolution_clock::now();
-	tdes_gr = mapGR(ts, tt, set_map, states_ori, forcible_ev);
+	des_gr = mapGR(ts, tt, set_map, states_ori, forcible_ev);
 	auto t4 = high_resolution_clock::now();
 	cout << endl << "Map-GR-Checking took: " 
          << duration_cast<milliseconds>(t4 - t3).count() << " ms!" << endl 
          << endl;
-	paths = findAllPaths(path_s, path_t, tdes_gr, s_t);     // Paths finding! Output lots of things
-		
+	paths = findAllPaths(path_s, path_t, des_gr, s_t);     // Paths finding! Output lots of things
+	
+	
+	alp.printWeak_force();
+	set<string> wf = alp.getWeak_force();
+	set<string> tdes_gr;
+	auto t5 = high_resolution_clock::now();
+	tdes_gr = timedGR(ts, tt, wf, set_map, states_ori, forcible_ev);
+	auto t6 = high_resolution_clock::now();
+	cout << endl << "Timed-GR-Checking took: " 
+         << duration_cast<milliseconds>(t6 - t5).count() << " ms!" << endl 
+         << endl;
+	
+	
+	set<string> ori_gr;
+	auto t7 = high_resolution_clock::now();
+	ori_gr = mapOriGR(ts, tt, set_map, states_ori, forcible_ev);
+	auto t8 = high_resolution_clock::now();
+	cout << endl << "Map-Original-GR-Checking took: " 
+         << duration_cast<milliseconds>(t8 - t7).count() << " ms!" << endl 
+         << endl;
+	
+	
+	set<string> tdes_ori_gr;
+	auto t9 = high_resolution_clock::now();
+	tdes_ori_gr = timedOriGR(ts, tt, wf, set_map, states_ori, forcible_ev);
+	auto t10 = high_resolution_clock::now();
+	cout << endl << "Timed-Original-GR-Checking took: " 
+         << duration_cast<milliseconds>(t10 - t9).count() << " ms!" << endl 
+         << endl;
+	
 	ou.close();
 	
 	

@@ -19,6 +19,11 @@ string& trim(string &);
 // The splitString func is used to split strings.
 void splitString(const string& s, vector<string>& v, const string& c);
 
+// The splitString func using set instead of vector
+// should be more efficient than vector sometimes
+// MIE and RE cannot use this, since they have order.
+void splitStringSet(const string& s, set<string>& v, const string& c);
+
 // The splitAds func is used to split transitions in .ADS file
 tran splitAds(string &s);  // don't set s to be const
 

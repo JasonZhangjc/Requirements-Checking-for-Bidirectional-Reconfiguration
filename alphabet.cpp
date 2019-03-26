@@ -15,6 +15,7 @@ set<string> alphabet::getTest_src(){return test_src;}
 set<string> alphabet::getTest_tgt(){return test_tgt;}
 vector<vector<string>> alphabet::getForce(){return force;}
 int alphabet::getNum_step(){return num_step;}
+set<string> alphabet::getWeak_force(){return weak_force;}
 
 // Not using this any more......
 void alphabet::readExtra() {
@@ -172,6 +173,13 @@ void alphabet::readExtraFriendly() {
     getline(myfile, temp);
     getline(myfile, temp);
     num_step = stoi(temp);
+    getline(myfile, temp);
+    
+    // weakly forcible events:
+    getline(myfile, temp);
+    getline(myfile, temp);
+    splitStringSet(temp, weak_force, ",");
+    getline(myfile, temp);
 }
 
 
@@ -253,4 +261,11 @@ void alphabet::printForce() {
 }
 void alphabet::printNum_step() {
 	cout << "The step limit is : " << num_step << endl;
+}
+void alphabet::printWeak_force() {
+	cout << "The weakly forcible events are : " << endl;
+	for (auto i : weak_force) {
+		cout << i << " ";
+	}
+	cout << endl;
 }
