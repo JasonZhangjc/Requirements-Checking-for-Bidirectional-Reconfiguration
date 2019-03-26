@@ -38,7 +38,7 @@ void alphabet::readExtra() {
     while (temp != "") {
     	vector<string> temp_vec;
     	splitString(temp, temp_vec, ",");
-    	mode_events.push_back(temp_vec);
+    	mode_events.insert(mode_events.end(), temp_vec);
     	getline(myfile, temp);
     }
     
@@ -97,7 +97,7 @@ void alphabet::readExtraFriendly() {
     while (temp != "") {
     	vector<string> temp_vec;
     	splitString(temp, temp_vec, ",");
-    	mode_events.push_back(temp_vec);
+    	mode_events.insert(mode_events.end(), temp_vec);
     	getline(myfile, temp);
     }
     
@@ -165,7 +165,7 @@ void alphabet::readExtraFriendly() {
         	cout << fc << " ";
         }
         cout << endl;
-    	force.push_back(temp_force);
+    	force.insert(force.end(), temp_force);
     	getline(myfile, temp);
     }
     
@@ -201,7 +201,7 @@ void alphabet::printMode_events() {
 	cout << "The alphabets for different modes are: " << endl;
 	int idx = 0;
 	for (auto i : mode_events) {
-		for (auto j : mode_events.at(idx)) {
+		for (auto j : mode_events[idx]) {
 			cout << j << " ";
 		}
 		cout << endl;

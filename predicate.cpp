@@ -54,8 +54,8 @@ void predicate::setMode_states(ads& a, vector<vector<string>>& events,
 				set<string>::iterator its;
 				its = s.find(p.getSrc());
 				vector<string>::iterator ite;
-				ite = find(events.at(i).begin(), events.at(i).end(), p.getEvt());
-				if (its != s.end() && ite != events.at(i).end()) {
+				ite = find(events[i].begin(), events[i].end(), p.getEvt());
+				if (its != s.end() && ite != events[i].end()) {
 					s.insert(p.getTgt());
 				}
 			}
@@ -78,7 +78,7 @@ void predicate::setMode_states(ads& a, vector<vector<string>>& events,
 		cout << "The number of states in mode " << i+1 << " are: " << endl;
 		cout << s.size() << endl;
 		
-		mode_states.push_back(s);
+		mode_states.insert(mode_states.end(), s);
 		
 		s.clear();                   // clear and swap are very important!!!!!
 		s_ori.clear();

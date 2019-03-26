@@ -17,7 +17,7 @@
 
 using namespace std;
 
-/* These are the functions for the REACHABILITY CHECKING */
+/* These are the functions for the GUARANTEED REACHABILITY CHECKING */
 
 // Check the reachability without considering controllability,
 // namely the loose reachability

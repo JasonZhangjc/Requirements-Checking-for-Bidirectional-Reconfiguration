@@ -31,13 +31,13 @@ vector<string> findAllPaths(const string& src, const string& dst,
 		if (it_sta_rch != sta_rch.end()) {
 		//cout << " 3 " << endl;
 			Path temp_i;
-			temp_i.push_back(j.first);
-			p_s.push_back(temp_i);
+			temp_i.insert(temp_i.end(), j.first);
+			p_s.insert(p_s.end(), temp_i);
 		//cout << " 4 " << endl;
 			for (auto k : j.second) {
 				set<string>::iterator it_k = sta_rch.find(k);
 				if (it_k != sta_rch.end()) {
-					p_s[i].push_back(k);
+					p_s[i].insert(p_s[i].end(), k);
 				}
 			}
 			i++;
@@ -55,7 +55,7 @@ vector<string> findAllPaths(const string& src, const string& dst,
 	// initialize the "in_stack" marker with all "0" (not in stack)
 	map<string, string> in_stack;
 	for (auto i : p_s) {
-		in_stack.insert(pair<string, string>(i.at(0), "0"));
+		in_stack.insert(pair<string, string>(i[0], "0"));
 	}
 	cout << "The in_stack is: " << endl;
 	for (auto i : in_stack) {
@@ -88,33 +88,33 @@ vector<string> findAllPaths(const string& src, const string& dst,
 	
 	// The algorithm is based on DFS
 	Path stack = {};
-	stack.push_back(src);
-	in_stack.at(src) = "1";
+	stack.insert(stack.end(), src);
+	in_stack[src] = "1";
 	cout << " Main loop starts! " << endl;
 	
 	  // Main loop
 	while (!stack.empty()) {		
 		  // Based on DFS 
 		  // Use find to decide
-		Path_it it_ele = find(is_visited.at(stack.back()).begin(), 
-		                      is_visited.at(stack.back()).end(), "0");
-		int n_pos = distance(is_visited.at(stack.back()).begin(), it_ele);
-		while (it_ele != is_visited.at(stack.back()).end()) {
+		Path_it it_ele = find(is_visited[stack.back()].begin(), 
+		                      is_visited[stack.back()].end(), "0");
+		int n_pos = distance(is_visited[stack.back()].begin(), it_ele);
+		while (it_ele != is_visited[stack.back()].end()) {
 			int idx = 0;
 		    for (int j=0; j<p_s.size(); j++) {
-		    	if (p_s.at(j).at(0) == stack.back())
+		    	if (p_s[j][0] == stack.back())
 		       		break;
 		       	idx++;
 		    }
-			if (in_stack.at(p_s.at(idx).at(n_pos + 1)) == "1") {
-				is_visited.at(stack.back() ).at(n_pos) = "1";
+			if (in_stack[p_s[idx][n_pos + 1]] == "1") {
+				is_visited[stack.back()][n_pos] = "1";
 				break;
 			}
 			else {				
-				if (!is_visited.at(stack.back()).empty())
-					is_visited.at(stack.back()).at(n_pos) = "1";
-				stack.push_back(p_s.at(idx).at(n_pos + 1));
-				in_stack.at(p_s.at(idx).at(n_pos + 1)) = "1";
+				if (!is_visited[stack.back()].empty())
+					is_visited[stack.back()][n_pos] = "1";
+				stack.insert(stack.end(), p_s[idx][n_pos + 1]);
+				in_stack[p_s[idx][n_pos + 1]] = "1";
 				//cout << "Push a new state in stack!" << endl;
 				break;
 			}
@@ -135,23 +135,23 @@ vector<string> findAllPaths(const string& src, const string& dst,
 			}
 		
 			cout << "Found a forcible path: " << forcible_path << endl;
-			p.push_back(forcible_path);
+			p.insert(p.end(), forcible_path);
 		
-			in_stack.at(stack.back()) = "0";
+			in_stack[stack.back()] = "0";
 			stack.pop_back();	
 		} 
             
 		string marker = "0";
-		Path_it itm = is_visited.at(stack.back()).begin();
-		for( ; itm!=is_visited.at(stack.back()).end(); ++itm) {
+		Path_it itm = is_visited[stack.back()].begin();
+		for( ; itm!=is_visited[stack.back()].end(); ++itm) {
 			if (*itm == "0")
 				marker = "1";
     	}
     	
     	if (marker == "0") {
-    		in_stack.at(stack.back()) = "0";
-    		Path_it itc = is_visited.at(stack.back()).begin();
-			for( ; itc!=is_visited.at(stack.back()).end(); ++itc) {
+    		in_stack[stack.back()] = "0";
+    		Path_it itc = is_visited[stack.back()].begin();
+			for( ; itc!=is_visited[stack.back()].end(); ++itc) {
 				*itc = "0";
     		}
     		stack.pop_back();

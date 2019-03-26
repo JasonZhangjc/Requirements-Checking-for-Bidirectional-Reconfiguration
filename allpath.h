@@ -11,6 +11,8 @@
 
 using namespace std;
 
+/* This is for the PATHS GENERATION */
+
 typedef vector<string> Path;
 typedef vector<string>::iterator Path_it;
 typedef vector<Path> PathSet;

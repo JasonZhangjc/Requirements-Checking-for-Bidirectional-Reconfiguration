@@ -20,11 +20,11 @@ void ads::setName(string _name){name = _name;}
 void ads::setSize(int _size){size = _size;}
 void ads::setStates() {
 	for (int i = 0; i < size; i++) {
-		states.push_back(to_string(i));
+		states.insert(states.end(), to_string(i));
 	}
 }
-void ads::addMarker(string _marker){marker.push_back(_marker);}
-void ads::addTrans(tran _trans){trans.push_back(_trans);}
+void ads::addMarker(string _marker){marker.insert(marker.end(), _marker);}
+void ads::addTrans(tran _trans){trans.insert(trans.end(), _trans);}
 
 void ads::setMap() {
 	for (auto i : this->getTrans()) {
@@ -43,14 +43,14 @@ void ads::setMap() {
 		// source_event&target map
 		if (iset != s_e_t.end()) {
 			vector<string> temp_et1;
-			temp_et1.push_back(evt);
-			temp_et1.push_back(tgt);
+			temp_et1.insert(temp_et1.end(), evt);
+			temp_et1.insert(temp_et1.end(), tgt);
 			s_e_t[src].insert(temp_et1);
 		}
 		else {
 			vector<string> temp_et2;
-			temp_et2.push_back(evt);
-			temp_et2.push_back(tgt);
+			temp_et2.insert(temp_et2.end(), evt);
+			temp_et2.insert(temp_et2.end(), tgt);
 			set<vector<string>> temp_set;
 			temp_set.insert(temp_et2);
 			s_e_t.insert(pair<string, set<vector<string>>>(src, temp_set));
@@ -201,7 +201,7 @@ void ads::printS_e_t() {
 	for (auto i : s_e_t) {
 		cout << i.first << " : " << endl;
 		for (auto j : i.second) {
-			cout << j.at(0) << " to " << j.at(1) << endl;
+			cout << j[0] << " to " << j[1] << endl;
 		}
 		cout << endl;
 	}

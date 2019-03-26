@@ -79,11 +79,11 @@ void checkSecond(ads& a, vector<string>& v_re, vector<set<string>>& states,
 			// cout << "m_t is: " << m_t << endl;
 			
 			set<string>::iterator its;
-			its = states.at(m_s-1).find(i.getSrc());
+			its = states[m_s-1].find(i.getSrc());
 			set<string>::iterator itt;
-			itt = states.at(m_t-1).find(i.getTgt());
+			itt = states[m_t-1].find(i.getTgt());
 			
-			if (its != states.at(m_s-1).end() && itt != states.at(m_t-1).end())
+			if (its != states[m_s-1].end() && itt != states[m_t-1].end())
 			{}
 			else {
 				int flag_2 = 1;

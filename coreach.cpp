@@ -20,7 +20,7 @@ void looseCoreach(ads& a, vector<set<string>>& states,
 		} // dst contains marker states now
 		
 		vector<tran> tr = a.getTrans();        // the tran set
-		vector<string> ev = events.at(flag_0); // the event set
+		vector<string> ev = events[flag_0]; // the event set
 		set<string> dst_ori;
 		while (dst_ori.size() != dst.size()) {
 			dst_ori = dst;
@@ -331,6 +331,8 @@ void kStepCoreach(set<string>& ts, set<string>& tt, vector<tran>& tr,
 
 
 
+
+
 // consistent with my backtracking algo!
 // With forcible event setting!!!!!!!!!
 // Infinite steps
@@ -394,7 +396,7 @@ set<string> guaranteedReach(set<string>& ts, set<string>& tt, vector<tran>& tr,
 					}
 					// Checking forcible events
 					for (auto fc : fe) {
-						if (fc.at(0) == a2.getEvt()) {
+						if (fc[0] == a2.getEvt()) {
 							for (int iter=1; iter<fc.size(); iter++) {
 								if (fc[iter] == a1) {
 									if (it3 != state_list.end()) {
@@ -664,7 +666,7 @@ set<string> efficientGR(set<string>& ts, set<string>& tt, vector<tran>& tr,
 					}
 					// Checking forcible events
 					for (auto fc : fe) {
-						if (fc.at(0) == a2.getEvt()) {
+						if (fc[0] == a2.getEvt()) {
 							for (int iter=1; iter<fc.size(); iter++) {
 								if (fc[iter] == a1) {
 									if (it3 != state_list.end()) {
@@ -1101,13 +1103,7 @@ set<string> timedGR(set<string>& ts, set<string>& tt, set<string> wf,
 			else if (flag_16 == 1) {
 				if (a1 == set_ele) {  // Only consider one source state.
 					state_list.insert(a1);
-					/*
-					cout << "The state_list contains : " << endl;
-					for (auto sta_l : state_list) {
-						cout << sta_l << " ";
-					}
-					cout << endl;
-					*/
+					
 					for (auto p : ts) {
 						set<string>::iterator itf = state_list.find(p);
 						if (itf != state_list.end()) {
@@ -1117,21 +1113,11 @@ set<string> timedGR(set<string>& ts, set<string>& tt, set<string> wf,
 					}
 					
 					return state_list;
-					// flag_found = 1;
-					// break;
 				}
 				
 				add_list.insert(a1);
 				state_rem.erase(a1);
 				cout << "State " << a1 << " is added! " << endl;
-				// deal with set
-				/*
-				cout << "The add_list contains : " << endl;
-				for (auto ad : add_list) {
-					cout << ad << " ";
-				}
-				cout << endl;
-				*/
 				continue;
 			}
 			
@@ -1142,13 +1128,6 @@ set<string> timedGR(set<string>& ts, set<string>& tt, set<string> wf,
 			else if (flag_1p == 1) {
 				if (a1 == set_ele) {  // Only consider one source state.
 					state_list.insert(a1);
-					/*
-					cout << "The state_list contains : " << endl;
-					for (auto sta_l : state_list) {
-						cout << sta_l << " ";
-					}
-					cout << endl;
-					*/
 					for (auto p : ts) {
 						set<string>::iterator itf = state_list.find(p);
 						if (itf != state_list.end()) {
@@ -1158,21 +1137,11 @@ set<string> timedGR(set<string>& ts, set<string>& tt, set<string> wf,
 					}
 					
 					return state_list;
-					// flag_found = 1;
-					// break;
 				}
 				
 				add_list.insert(a1);
 				state_rem.erase(a1);
 				cout << "State " << a1 << " is added! " << endl;
-				// deal with set
-				/*
-				cout << "The add_list contains : " << endl;
-				for (auto ad : add_list) {
-					cout << ad << " ";
-				}
-				cout << endl;
-				*/
 				continue;
 			}
 			
@@ -1495,7 +1464,7 @@ void kStepGuaReach(set<string>& ts, set<string>& tt, vector<tran>& tr,
 					}
 					// Checking forcible events
 					for (auto fc : fe) {
-						if (fc.at(0) == a2.getEvt()) {
+						if (fc[0] == a2.getEvt()) {
 							for (int iter=1; iter<fc.size(); iter++) {
 								if (fc[iter] == a1) {
 									if (it3 != state_list.end()) {
